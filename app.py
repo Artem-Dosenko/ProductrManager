@@ -26,6 +26,8 @@ def index():
 
 @app.route('/delete/<int:index>')
 def delete(index):
-    print(index)
+    products.pop(index)
+    flash("Item deleted")
+    return redirect(url_for('index'))
 
 app.run(debug=True)
