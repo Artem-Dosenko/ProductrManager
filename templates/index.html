@@ -11,7 +11,7 @@
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             {% for msg in messages %}
-                <p style="color: red">{{ msg }}</p>
+                <p>{{ msg }}</p>
             {% endfor %}
         {% endif %}
     {% endwith %}
@@ -25,6 +25,33 @@
         <input type="text" id="category" name="category" placeholder="Enter" required>
         <button type="submit">Add</button>
     </form>
+
+    <h3>Products: </h3>
+    <table border="1px" cellpadding="5px">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Category</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for item in products %}
+                <tr>
+                    <td>{{ item["name"] }}</td>
+                    <td>{{ item["price"] }}</td>
+                    <td>{{ item["category"] }}</td>
+                    <td>
+                        <a href="{{ url_for('delete', index=loop.index0) }}">
+                            <button type="submit">Delete</button>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
 </body>
 </html>
