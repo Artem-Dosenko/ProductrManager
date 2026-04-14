@@ -26,6 +26,17 @@
         <button type="submit">Add</button>
     </form>
 
+    <form method="GET">
+        <select name="category">
+            <option value="all" {% if choice_category=='all' %} selected {% endif %}>All</option>
+
+            {% for category in categories %}
+                <option value="{{ category }}" {% if choice_category==category %} selected {% endif %}>{{ category.title() }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Apply</button>
+    </form>
+
     <h3>Products: </h3>
     <table border="1px" cellpadding="5px">
         <thead>

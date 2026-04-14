@@ -8,9 +8,9 @@ products = []
 @app.route('/products', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        name = request.form.get('name')
+        name = request.form.get('name').lower()
         price = request.form.get('price')
-        category = request.form.get('category')
+        category = request.form.get('category').lower()
 
         for item in products:
             if item.get('name') == name:
@@ -22,7 +22,18 @@ def index():
 
         return redirect(url_for('index'))
 
-    return render_template('index.html', products=products)
+    all_categories = map(lambda item: item['category'], products)
+    choice_category = request.args.get('category', 'all')
+
+    if choice_category == 'all':
+        filter_products = products
+    else:
+        filter_products = filter(lambda item: item['category'] == choice_category, products)
+
+    return render_template('index.html',
+                           products=filter_products,
+                           categories=all_categories,
+                           choice_category=choice_category)
 
 @app.route('/delete/<int:index>')
 def delete(index):
