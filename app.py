@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request, flash, redirect, url_for
-
+from models import init_db
+from action_db import *
 app = Flask(__name__)
 app.secret_key = '123'
+init_db()
 products = []
 
 @app.route('/', methods=['GET', 'POST'])
