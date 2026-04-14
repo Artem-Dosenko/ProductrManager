@@ -15,3 +15,5 @@ def product_exist(name) -> bool:
 def add_product(name: str, price: float, category: str):
     Product.create(name=name, price=price, category=category)
 
+def delete_product(product_id: int):
+    Product.delete().where(Product.id == product_id).execute()

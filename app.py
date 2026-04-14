@@ -11,26 +11,24 @@ products = []
 def index():
     if request.method == 'POST':
         name = request.form.get('name').lower()
-        price = request.form.get('price')
+        price = float(request.form.get('price'))
         category = request.form.get('category').lower()
 
-        for item in products:
-            if item.get('name') == name:
-                flash("Item already exists")
-                break
+        if product_exist(name):
+            flash("Item already exists")
         else:
-            info_product = {"name": name, "price": price, "category": category}
-            products.append(info_product)
+            add_product(name, price, category)
+            products.append({"name": name, "price": price, "category": category})
 
         return redirect(url_for('index'))
 
-    all_categories = map(lambda item: item['category'], products)
+    all_categories = get_all_categories()
     choice_category = request.args.get('category', 'all')
 
     if choice_category == 'all':
-        filter_products = products
+        filter_products = get_all_products()
     else:
-        filter_products = filter(lambda item: item['category'] == choice_category, products)
+        filter_products = get_product_by_category(choice_category)
 
     return render_template('index.html',
                            products=filter_products,
