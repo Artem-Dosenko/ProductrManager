@@ -15,8 +15,9 @@ def index():
         category = request.form.get('category').lower()
 
         if product_exist(name):
-            flash("Item already exists")
+            flash("Item already exists", category="error")
         else:
+            flash("Item added", category="success")
             add_product(name, price, category)
             products.append({"name": name, "price": price, "category": category})
 
@@ -37,8 +38,7 @@ def index():
 
 @app.route('/delete/<int:index>')
 def delete(index):
-    deleted_item = products.pop(index)
-    flash(f"Item {deleted_item["name"]} deleted")
+    flash(f"Item deleted", category="success")
     return redirect(url_for('index'))
 
 app.run(debug=True)
