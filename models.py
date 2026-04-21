@@ -11,6 +11,10 @@ class Product(BaseModel):
     price = FloatField()
     category = TextField()
 
+class Company(BaseModel):
+    name = TextField()
+    password = TextField()
+
 def init_db():
     db.connect()
-    db.create_tables([Product])
+    db.create_tables([Company, Product])

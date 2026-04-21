@@ -8,12 +8,18 @@
 <body>
 
     <nav class="navbar navbar-dark bg-dark mb-3">
-      <div class="container">
-        <a class="navbar-brand" href="#">
-          <img src="{{ url_for('static', filename='images/bucket.png') }}" style="filter: invert(100)" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
-          <span class="navbar-brand h1">PRODUCT MANAGER</span>
-        </a>
-      </div>
+        <div class="container">
+            <a class="navbar-brand" href="#">
+            <img src="{{ url_for('static', filename='images/bucket.png') }}" style="filter: invert(100)" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+            <span class="navbar-brand h1">PRODUCT MANAGER</span>
+            </a>
+
+            <div>
+                <a href="{{ url_for('register') }}" class="btn btn-light">Register</a>
+                <a href="{{ url_for('login') }}" class="btn btn-light">Login</a>
+            </div>
+        </div>
+
     </nav>
 
     <div class="container">
@@ -29,7 +35,7 @@
             {% endif %}
         {% endwith %}
 
-        <form method="POST" class="row m">
+        <form method="POST">
           <div class="row mb-4">
             <div class="col-md-2">
               <input type="text" name="name" class="form-control" placeholder="Назва" required>

@@ -1,5 +1,17 @@
-from models import Product
+from models import Product, Company
 
+'''Company'''
+def company_exist(name: str) -> bool:
+    return Company.select().where(Company.name == name).exists()
+
+def add_company(name: str, password: str):
+    Company.create(name=name, password=password)
+
+def get_company_by_name(name: str):
+    return Company.get_or_none(Company.name == name)
+
+
+'''Item'''
 def get_all_products():
     return Product.select()
 
