@@ -65,7 +65,7 @@ Product Manager
                         <td>{{ item["price"] }}</td>
                         <td>{{ item["category"] }}</td>
                         <td>
-                            <a href="{{ url_for('delete', name=item['name']) }}">
+                            <a href="{{ url_for('product.delete', name=item['name']) }}">
                                 <button type="submit" class="btn btn-danger">Delete</button>
                             </a>
                         </td>
