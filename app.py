@@ -10,6 +10,12 @@ products = []
 def is_logged():
     return 'company_name' in session
 
+def current_company():
+    name_company = session.get('company_name')
+    if not name_company:
+        return None
+    return get_company_by_name(name_company)
+
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/products', methods=['GET', 'POST'])
 def index():
@@ -17,36 +23,43 @@ def index():
     if not is_logged():
         return redirect(url_for('login'))
 
+    company = current_company()
+
     if request.method == 'POST':
         name = request.form.get('name').lower()
         price = float(request.form.get('price'))
         category = request.form.get('category').lower()
 
-        if product_exist(name):
+        if product_exist(name, company.id):
             flash("Item already exists")
         else:
-            add_product(name, price, category)
+            add_product(name, price, category, company.id)
             products.append({"name": name, "price": price, "category": category})
 
         return redirect(url_for('index'))
 
-    all_categories = get_all_categories()
+    all_categories = get_all_categories(company.id)
     choice_category = request.args.get('category', 'all')
 
     if choice_category == 'all':
-        filter_products = get_all_products()
+        filter_products = get_all_products(company.id)
     else:
-        filter_products = get_product_by_category(choice_category)
+        filter_products = get_product_by_category(choice_category, company.id)
 
     return render_template('index.html',
                            products=filter_products,
                            categories=all_categories,
                            choice_category=choice_category)
 
-@app.route('/delete/<int:index>')
-def delete(index):
-    deleted_item = products.pop(index)
-    flash(f"Item {deleted_item["name"]} deleted")
+@app.route('/delete/<name>')
+def delete(name):
+    if not is_logged():
+        return redirect(url_for('login'))
+
+    company = current_company()
+    delete_product(name, company.id)
+
+    flash(f'Item {name} deleted')
     return redirect(url_for('index'))
 
 @app.route('/register', methods=['GET', 'POST'])

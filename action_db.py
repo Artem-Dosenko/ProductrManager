@@ -12,20 +12,20 @@ def get_company_by_name(name: str):
 
 
 '''Item'''
-def get_all_products():
-    return Product.select()
+def get_all_products(company_id: int):
+    return Product.select().where(Product.company == company_id)
 
-def get_product_by_category(category):
-    return Product.select().where(Product.category == category)
+def get_product_by_category(category, company_id: int):
+    return Product.select().where(Product.category == category & Product.company == company_id)
 
-def get_all_categories():
-    return Product.select().distinct().order_by(Product.category)
+def get_all_categories(company_id: int):
+    return Product.select().where(Product.company == company_id).distinct().order_by(Product.category)
 
-def product_exist(name) -> bool:
-    return Product.select().where(Product.name == name).exists()
+def product_exist(name, company_id: int) -> bool:
+    return Product.select().where(Product.name == name & Product.company == company_id).exists()
 
-def add_product(name: str, price: float, category: str):
-    Product.create(name=name, price=price, category=category)
+def add_product(name: str, price: float, category: str, company_id: int):
+    Product.create(name=name, price=price, category=category, company=company_id)
 
-def delete_product(product_id: int):
-    Product.delete().where(Product.id == product_id).execute()
+def delete_product(name: str, company_id: int):
+    Product.delete().where((Product.name == name) & (Product.company == company_id)).execute()
